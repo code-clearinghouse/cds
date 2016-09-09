@@ -239,7 +239,14 @@ function parseMetadata($metadataFile, $defaultLanguage){
         }
 
 
-	$CurrentXMLReaderNode->read();
+	//	If we arrive here, we have
+	//  read the first node at very least and 
+    // 	if it's not a comment, it should be an entityDescriptor
+    //  if it WAS 1 or more comments, we will have eaten then up and the NEXT read will have occurred
+    //  if this next read of the XML nodes is NOT an EntitiesDescriptor, (note the plural), we should fail.
+    //  if the  next read of the XML nodes IS an EntitiesDescriptor, we should proceed stead of 'read again'
+    //    $CurrentXMLReaderNode->read();
+
 	if ($CurrentXMLReaderNode->localName  !== 'EntitiesDescriptor') {
 		$errorMsg = 'Metadata file '.$metadataFile.' does not include a root node EntitiesDescriptor'; 
 		if (isRunViaCLI()){
